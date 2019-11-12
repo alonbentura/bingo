@@ -1,6 +1,6 @@
 import React from "react";
-import { connect  } from "react-redux";
-import { Box } from "./box";
+import { connect } from "react-redux";
+import { BoxWithRedux } from "./box";
 import _ from "lodash";
 import { choseNumber } from "./actions";
 
@@ -10,40 +10,49 @@ class HomePage extends React.Component {
   }
 
   header = () => {
-    const chosenNumbers = _.get(this.props, "state" , []);
+    const chosenNumbers = _.get(this.props, "state", []);
     const chosenNumToShow = chosenNumbers.map((n, index) => {
       return <div style={styles.chosenNum}>{n}</div>;
     });
     return (
-      <div style={{ height: 300, display: "flex", flexDirection: "row" }}>
+      <div style={styles.headerContainer}>
         <div>
-          <div style={styles.btn} onClick={this.props.onClick}>
-            {" "}
-            click here
+          <div style={styles.btn} onClick={this.onClick}>
+            Click here
           </div>
         </div>
-        <div style={{ display: "flex", flexDirection: "row" }}>
+        <div
+          style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
+        >
           {chosenNumToShow}
         </div>
       </div>
     );
   };
 
+  onClick = () => {
+    if (this.props.state.length < 100) {
+      var r = Math.floor(Math.random() * 100) + 1;
+      if (this.props.state.indexOf(r) === -1) {
+        return this.props.onClick("choose", r);
+      }
+    }
+  };
 
-  renderBoxs = () => {
-    const numOfBoxs = [1, 2, 3, 4, 5, 6];
-    const bla = numOfBoxs.map((box, index) => {
-      return <Box key={index} />;
+  renderBoxes = () => {
+    const numOfBoxes = [1 , 2 , 3 ,4 ,5, 6];
+    const mappedBoxes = numOfBoxes.map((box, index) => {
+      return <BoxWithRedux key={index} />;
     });
-    return bla;
+    return mappedBoxes;
   };
   render() {
-    console.log(this.props.state);
+    console.log('redux', this.props.state);
     return (
       <div>
         {this.header()}
         <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {this.renderBoxs()}
+          {this.renderBoxes()}
         </div>
       </div>
     );
@@ -53,9 +62,13 @@ class HomePage extends React.Component {
 const styles = {
   btn: {
     border: "solid",
-    width: 50,
+    width: 200,
     height: 50,
-    backgroundColor: "blue"
+    backgroundColor: "blue",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "white",
+    display: "flex"
   },
   chosenNum: {
     border: "solid",
@@ -66,6 +79,12 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     display: "flex"
+  },
+  headerContainer: {
+    height: "100%",
+    width: 500,
+    display: "flex",
+    flexWrap: "wrap"
   }
 };
 
@@ -76,8 +95,8 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  onClick: () => dispatch(choseNumber())
-})
+  onClick: (type, r) => dispatch(choseNumber(type, r))
+});
 
 export const HomePageWithRedux = connect(
   mapStateToProps,

@@ -1,10 +1,6 @@
-
-export const choseNumber = () => {
-
-  const randomNum = Math.floor(Math.random() * 100) + 1;
+export const choseNumber = (type, randomNum) => {
   return {
-    
-    type: 'choose',
+    type: type,
     number: randomNum
-  }
-}
+  };
+};
