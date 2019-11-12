@@ -31,9 +31,10 @@ class HomePage extends React.Component {
   };
 
   onClick = () => {
-    if (this.props.state.length < 100) {
-      var r = Math.floor(Math.random() * 100) + 1;
+    if (this.props.state.length < 90) {
+      var r = Math.floor(Math.random() * 90) + 1;
       if (this.props.state.indexOf(r) === -1) {
+        console.log(r)
         return this.props.onClick("choose", r);
       }
     }
@@ -47,7 +48,6 @@ class HomePage extends React.Component {
     return mappedBoxes;
   };
   render() {
-    console.log('redux', this.props.state);
     return (
       <div>
         {this.header()}
@@ -68,7 +68,8 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     color: "white",
-    display: "flex"
+    display: "flex",
+    cursor: 'pointer'
   },
   chosenNum: {
     border: "solid",
@@ -78,6 +79,7 @@ const styles = {
     backgroundColor: "yellow",
     justifyContent: "center",
     alignItems: "center",
+    margin: 5,
     display: "flex"
   },
   headerContainer: {

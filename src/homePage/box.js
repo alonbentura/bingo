@@ -15,10 +15,11 @@ export class Box extends React.Component {
 
   getRandomNumbers() {
     let numbers = []
-    for (let i = 0 ;i <30; i++) {
-      let randomNumber = Math.floor(Math.random() * 100) + 1;
+    while (numbers.length < 30) {
+      let randomNumber = Math.floor(Math.random() * 90) + 1;
       if (numbers.indexOf(randomNumber) === -1) {
         numbers.push(randomNumber);
+      
       }
     }
 
@@ -28,7 +29,8 @@ export class Box extends React.Component {
   }
 
   checkIfExist = () => {
-    for (let i = 0; i < this.state.data.length; i++) {
+    let i = 0
+    while (i < this.state.data.length) {
       let numbersToRemove = [...this.state.data];
       for (let i = 0; i < this.props.state.length; i++) {
         var index = numbersToRemove.indexOf(this.props.state[i]);
@@ -37,6 +39,7 @@ export class Box extends React.Component {
         numbersToRemove.splice(index, 1);
         this.setState({ data: numbersToRemove });
       }
+      i++
     }
   };
 
