@@ -1,8 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { boxChosenNumbers, deleteFromBoard } from "./actions";
-import _ from "lodash";
-
 
 export class Box extends React.Component {
   constructor(props) {
@@ -12,7 +9,7 @@ export class Box extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getRandomNumbers();
   }
 
@@ -22,21 +19,23 @@ export class Box extends React.Component {
       let randomNumber = Math.floor(Math.random() * 90) + 1;
       if (numbers.indexOf(randomNumber) === -1) {
         numbers.push(randomNumber);
-
+      
       }
     }
-    this.props.choseBoxNumbers('boxNumbers', numbers)
+
+    this.setState({
+      data: numbers
+    });
   }
 
   checkIfExist = () => {
     let i = 0
-    while (i < this.props.state.boxNumbers.length) {
-      let numbersToRemove = [...this.props.state.boxNumbers];
-      for (let i = 0; i < this.props.state.chosenNumbers.length; i++) {
-        var index = numbersToRemove.indexOf(this.props.state.chosenNumbers[i]);
+    while (i < this.state.data.length) {
+      let numbersToRemove = [...this.state.data];
+      for (let i = 0; i < this.props.state.length; i++) {
+        var index = numbersToRemove.indexOf(this.props.state[i]);
       }
       if (index > -1) {
-        this.props.deleteFromBoard('deleteFromBoard', numbersToRemove)
         numbersToRemove.splice(index, 1);
         this.setState({ data: numbersToRemove });
       }
@@ -45,7 +44,7 @@ export class Box extends React.Component {
   };
 
   firstRow = () => {
-    const row = _.get(this.props, 'state.boxNumbers').slice(0, 10);
+    const row = this.state.data.slice(0, 10);
     const mappedTD = row.map((td, index) => {
       return (
         <td key={index} style={{ fontSize: 20 }}>
@@ -56,7 +55,7 @@ export class Box extends React.Component {
     return <tr style={styles.row}>{mappedTD}</tr>;
   };
   secondRow = () => {
-    const row = this.props.state.boxNumbers.slice(10, 20);
+    const row = this.state.data.slice(10, 20);
     const mappedTD = row.map((td, index) => {
       return (
         <td key={index} style={{ fontSize: 20 }}>
@@ -68,7 +67,7 @@ export class Box extends React.Component {
   };
 
   thirdRow = () => {
-    const row = this.props.state.boxNumbers.slice(20, 30);
+    const row = this.state.data.slice(20, 30);
     const mappedTD = row.map((td, index) => {
       return (
         <td key={index} style={{ fontSize: 20 }}>
@@ -94,28 +93,23 @@ export class Box extends React.Component {
     return (
 
       <div style={styles.blockContainer}>
-        {this.props.state.boxNumbers.length === 0 ? <div>Bingo!!!</div> : null}
-
+      {this.state.data.length === 0 ? <div>Bingo!!!</div> : null}
+      
         <table style={{ width: "inherit" }}>
-          <tbody>{this.renderTableData()}</tbody>
+        <tbody>{this.renderTableData()}</tbody>
         </table>
-      </div>
+        </div>
     );
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    state
+    state: state
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  choseBoxNumbers: (type, numbers) => dispatch(boxChosenNumbers(type, numbers)),
-  deleteFromBoard: (type, newBoard) => dispatch(deleteFromBoard(type, newBoard))
-});
-
-export const BoxWithRedux = connect(mapStateToProps, mapDispatchToProps)(Box);
+export const BoxWithRedux = connect(mapStateToProps)(Box);
 
 const styles = {
   blockContainer: {

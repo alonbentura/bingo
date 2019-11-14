@@ -1,20 +1,10 @@
-const initialState = {
-  chosenNumbers: [],
-  boxNumbers:[]
-};
+const chosenNumbers = [];
 
 
-export const reducer = (state = initialState, action) => {
+export const reducer = (state = chosenNumbers, action) => {
   switch (action.type) {
     case "choose":
-      return  {
-        ...state,
-        chosenNumbers: state.chosenNumbers.concat(action.number),
-      }
-      case "boxNumbers":
-        return (Object.assign(state , ...state.boxNumbers = action.numbers))
-        case "deleteFromBoard":
-        return (Object.assign(state , ...state.boxNumbers = action.newBoard))
+      return [...state, action.number]
     default:
       return state;
   }
