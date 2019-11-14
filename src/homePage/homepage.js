@@ -10,7 +10,7 @@ class HomePage extends React.Component {
   }
 
   header = () => {
-    const chosenNumbers = _.get(this.props, "state", []);
+    const chosenNumbers = _.get(this.props, "state.chosenNumbers", []);
     const chosenNumToShow = chosenNumbers.map((n, index) => {
       return <div style={styles.chosenNum}>{n}</div>;
     });
@@ -31,24 +31,26 @@ class HomePage extends React.Component {
   };
 
   onClick = () => {
-    if (this.props.state.length < 90) {
+    if (this.props.state.chosenNumbers.length < 90) {
       var r = Math.floor(Math.random() * 90) + 1;
-      if (this.props.state.indexOf(r) === -1) {
+      if (this.props.state.chosenNumbers.indexOf(r) === -1) {
         return this.props.onClick("choose", r);
       }
-      else{
+      else {
         this.onClick()
       }
     }
   };
 
   renderBoxes = () => {
-    const numOfBoxes = [1 , 2 , 3 ,4 ,5, 6];
+    const numOfBoxes = [1, 2, 3, 4, 5, 6];
     const mappedBoxes = numOfBoxes.map((box, index) => {
       return <BoxWithRedux key={index} />;
     });
     return mappedBoxes;
   };
+
+
   render() {
     return (
       <div>
