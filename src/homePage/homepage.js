@@ -34,8 +34,10 @@ class HomePage extends React.Component {
     if (this.props.state.length < 90) {
       var r = Math.floor(Math.random() * 90) + 1;
       if (this.props.state.indexOf(r) === -1) {
-        console.log(r)
         return this.props.onClick("choose", r);
+      }
+      else{
+        this.onClick()
       }
     }
   };
